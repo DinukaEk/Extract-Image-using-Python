@@ -2,7 +2,8 @@ import numpy as np
 import cv2
 
 
-img = cv2.imread('t-shirt-army-green.jpg')
+#img = cv2.imread('t-shirt-army-green.jpg')
+img = cv2.imread('Untitled.png')
 imgray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 ret, thresh = cv2.threshold(imgray, 127, 255, 0)
 
@@ -61,7 +62,7 @@ cv2.imshow('Contours', canvas)
 #cv2.imshow('OR', bitwise_OR)
 #cv2.imshow('Background mask', mask)
 #cv2.imshow('New background', new_background)
-#cv2.imshow('Output', cv2.bitwise_and(img, new_background))
+cv2.imshow('Output', cv2.bitwise_and(img, new_background))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

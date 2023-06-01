@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
  #image_path
-img_path="lena.bmp"
+img_path= "../lena.bmp"
 
 #read image
 img_raw = cv2.imread(img_path)

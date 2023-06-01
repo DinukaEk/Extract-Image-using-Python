@@ -13,19 +13,20 @@ with mp_holistic.Holistic(
     enable_segmentation=True,
     refine_face_landmarks=True) as holistic:
   for idx, file in enumerate(IMAGE_FILES):
-    image = cv2.imread(file)
+    image = cv2.imread('Man without tshirt 2.jpg')
     image_height, image_width, _ = image.shape
     # Convert the BGR image to RGB before processing.
     results = holistic.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
     if results.pose_landmarks:
       print(
-          f'Nose coordinates: ('
-          f'{results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].x * image_width}, '
-          f'{results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].y * image_height})'
+          f'Arm coordinates: ('
+          f'{results.pose_landmarks.landmark[mp_holistic.PoseLandmark.ARM].x * image_width}, '
+          f'{results.pose_landmarks.landmark[mp_holistic.PoseLandmark.ARM].y * image_height})'
       )
 
     annotated_image = image.copy()
+
     # Draw segmentation on the image.
     # To improve segmentation around boundaries, consider applying a joint
     # bilateral filter to "results.segmentation_mask" with "image".
@@ -33,14 +34,8 @@ with mp_holistic.Holistic(
     bg_image = mp.zeros(image.shape, dtype=mp.uint8)
     bg_image[:] = BG_COLOR
     annotated_image = mp.where(condition, annotated_image, bg_image)
+
     # Draw pose, left and right hands, and face landmarks on the image.
-    mp_drawing.draw_landmarks(
-        annotated_image,
-        results.face_landmarks,
-        mp_holistic.FACEMESH_TESSELATION,
-        landmark_drawing_spec=None,
-        connection_drawing_spec=mp_drawing_styles
-        .get_default_face_mesh_tesselation_style())
     mp_drawing.draw_landmarks(
         annotated_image,
         results.pose_landmarks,
@@ -69,23 +64,21 @@ with mp_holistic.Holistic(
     image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = holistic.process(image)
+    image_height, image_width, _ = image.shape
 
     # Draw landmark annotation on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    mp_drawing.draw_landmarks(
-        image,
-        results.face_landmarks,
-        mp_holistic.FACEMESH_CONTOURS,
-        landmark_drawing_spec=None,
-        connection_drawing_spec=mp_drawing_styles
-        .get_default_face_mesh_contours_style())
+
     mp_drawing.draw_landmarks(
         image,
         results.pose_landmarks,
         mp_holistic.POSE_CONNECTIONS,
         landmark_drawing_spec=mp_drawing_styles
         .get_default_pose_landmarks_style())
+
+
+
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('MediaPipe Holistic', cv2.flip(image, 1))
     if cv2.waitKey(5) & 0xFF == 27:

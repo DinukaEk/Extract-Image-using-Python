@@ -1,7 +1,10 @@
 import cv2
+import os
+
+os.system("start microsoft.windows.camera:")
 
 
-img1 = cv2.imread('Man without tshirt 2.jpg')
+img1 = cv2.imread('img.jpg')
 img2 = cv2.imread('t-shirt-sea-green.jpg')
 
 img_2_shape = img2.shape
@@ -31,14 +34,12 @@ cv2.namedWindow('mask', cv2.WINDOW_NORMAL)
 cv2.namedWindow('maskinv', cv2.WINDOW_NORMAL)
 cv2.namedWindow('res', cv2.WINDOW_NORMAL)
 cv2.namedWindow('img2gray', cv2.WINDOW_NORMAL)
-cv2.namedWindow('nw', cv2.WINDOW_NORMAL)
 cv2.imshow('mask', mask)
 cv2.imshow('maskinv', mask_inv)
 cv2.imshow('img1_bg', img1_bg)
 cv2.imshow('img2_fg', img2_fg)
 cv2.imshow('res', img1)
 cv2.imshow('img2gray', img2gray)
-cv2.imshow('nw', img_2_shape)
 
 if cv2.waitKey(0) & 0xff == 27:
     cv2.destroyAllWindows()
